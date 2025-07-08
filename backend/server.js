@@ -5,6 +5,7 @@ const path = require("path");
 const connectDB = require("./config/db");
 
 const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
@@ -28,7 +29,7 @@ app.use(express.json());
 // Routes
 // app.use("/api/auth", authRoutes);
 app.use("/api/auth", authRoutes);
-// app.use("/api/user", userRoutes);
+app.use("/api/user", userRoutes);
 // app.use("/api/task", taskRoutes);
 // app.use("/api/report", reportRoutes);
 

@@ -7,50 +7,48 @@ const bcrypt = require("bcryptjs");
 // @access Private/Admin
 const getUsers = async (req, res) => {
     try {
-        const users = await User.find({role:'member'}).select("-password"); // Exclude password from response
+        const users = await User.find({ role: 'user' }).select("-password"); // Exclude password from response
 
         // Add task counts to each user
         const usersWithTaskCount = await Promise.all(users.map(async (user) => {
-            const taskCount = await Task.countDocuments({ user: user._id });
+            const pendingTasks = await Task.countDocuments({ assignedTo: user._id, status: "pending" });
+            const inProgressTasks = await Task.countDocuments({ assignedTo: user._id, status: "in progress" });
+            const completedTasks = await Task.countDocuments({ assignedTo: user._id, status: "completed" });
+
             return {
-                ...user.toObject(),
-                taskCount: taskCount
+                ...user._doc, // Include all existing user data
+                pendingTasks,
+                inProgressTasks,
+                completedTasks,
             };
-        }));    
+        }));
+
+        res.status(200).json(usersWithTaskCount);
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
-    }   
+    }
 };
 
 // @desc Get user by ID
 // @route GET /api/users/:id
 // @access Private/Admin
 const getUserById = async (req, res) => {
-    try{
-
-    }catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message });
-    }
-};
-
-// @desc Delete a user (Admin only)
-// @route DELETE /api/users/:id
-// @access Private (Admin)
-const deleteUser = async (req, res) => {
     try {
-        const user = await User.findById(req.params.id);
+        const user = await User.findById(req.params.id).select("-password");
+
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-        await user.remove();
-        res.status(200).json({ message: "User deleted successfully" });
+
+        res.status(200).json(user);
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
 
+
+
 module.exports = {
     getUsers,
-    getUserById,
-    deleteUser,
+    getUserById
 };

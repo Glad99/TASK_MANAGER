@@ -79,6 +79,7 @@ const loginUser = async (req, res) => {
         return res.status(401).json({ message: "Invalid email or password" });
         }
 
+      
     // Return user data with JWT
     res.status(200).json({
       _id: user._id,

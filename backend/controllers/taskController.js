@@ -41,7 +41,7 @@ const createTask = async (req, res) => {
             return res.status(400).json({ message: "AssignedTo must be an array of user IDs" });
         }
 
-        const task = Task.create({
+        const task = await Task.create({
             title,
             description,
             priority,
@@ -51,7 +51,7 @@ const createTask = async (req, res) => {
             attachments,
             todoChecklist,
         });
-
+        console.log("Task created:", task);
         res.status(201).json({
             message: "Task created successfully",   
             task,

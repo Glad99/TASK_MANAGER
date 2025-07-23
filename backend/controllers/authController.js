@@ -3,10 +3,17 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 // Generate JWT token
-const generateToken = (userId) => {
-  return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
-    expiresIn: "7d",
-  });
+// const generateToken = (userId) => {
+//   return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
+//     expiresIn: "7d",
+//   });
+// };
+const generateToken = (user) => {
+  return jwt.sign(
+    { id: user._id, role: user.role },
+    process.env.JWT_SECRET,
+    { expiresIn: "7d" }
+  );
 };
 
 // @desc Register a new user
@@ -54,7 +61,7 @@ const registerUser = async (req, res) => {
       email: newUser.email,
       role: newUser.role,
       profileImageUrl: newUser.profileImageUrl,
-      token: generateToken(newUser._id),
+      token: generateToken(newUser),
     });
     } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
@@ -87,7 +94,7 @@ const loginUser = async (req, res) => {
       email: user.email,
       role: user.role,
       profileImageUrl: user.profileImageUrl,
-      token: generateToken(user._id),
+      token: generateToken(user),
     });
     } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
@@ -140,7 +147,7 @@ const updateUserProfile = async (req, res) => {
       email: updatedUser.email,
       role: updatedUser.role,
       profileImageUrl: updatedUser.profileImageUrl,
-      token: generateToken(updatedUser._id),
+      token: generateToken(updatedUser),
     });
     
   } catch (error) {

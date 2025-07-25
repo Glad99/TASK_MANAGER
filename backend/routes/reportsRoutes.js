@@ -1,5 +1,6 @@
 const express = require("express");
 const { adminOnly, protect } = require("../middlewares/authMiddleware");
+const { exportTasksReport, exportUsersReport } = require("../controllers/reportsController");
 
 const router = express.Router();
 

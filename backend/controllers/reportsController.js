@@ -19,7 +19,15 @@ const exportTasksReport = async (req, res) => {
 // @desc Export all user-task report as an Excel file
 // @route GET /api/reports/export/users
 // @access Private/Admin 
-const exportUsersReport = async (req, res) => {};
+const exportUsersReport = async (req, res) => {
+    try{
+
+    } catch (error) { 
+        res
+            .status(500)
+            .json({ message: "Failed to export tasks report", error: error.message });
+}
+};
 
 module.exports = {
     exportTasksReport,

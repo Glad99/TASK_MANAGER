@@ -38,6 +38,19 @@ const exportTasksReport = async (req, res) => {
             });
     });
 
+    res.setHeader(
+        "Content-Type",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader(
+        "Content-Disposition",
+        `attachment; filename=tasks_report_${new Date().toISOString().split("T")[0]}.xlsx`
+    );
+
+    return workbook.xlsx.write(res).then(() => {
+        res.status(200).end();
+    });
+    
     } catch (error) { 
         res
             .status(500)

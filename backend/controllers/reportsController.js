@@ -8,6 +8,35 @@ const excelJS = require("exceljs");
 // @access Private/Admin
 const exportTasksReport = async (req, res) => { 
     try{
+        const tasks = await Task.find().populate("assignedTo", "name email").populate("createdBy", "name email");
+
+        const workbook = new excelJS.Workbook();
+        const worksheet = workbook.addWorksheet("Tasks Report");
+
+        worksheet.columns = [
+            { header: "Task ID", key: "_id", width: 30 },
+            { header: "Title", key: "title", width: 30 },
+            { header: "Description", key: "description", width: 50 },
+            { header: "Status", key: "status", width: 20 },
+            { header: "Priority", key: "priority", width: 20 },
+            {header: "Due Date", key: "dueDate", width: 20 },
+            { header: "Assigned To", key: "assignedTo.name", width: 30 },
+        ];
+
+        tasks.forEach((task) => {
+            const assignedTo = task.assignedTo
+            .map(user => `${user.name} (${user.email})`)
+            .join (", ");
+            worksheet.addRow({
+                _id: task._id,
+                title: task.title,
+                description: task.description,
+                status: task.status,
+                priority: task.priority,
+                dueDate: task.dueDate.toISOString().split("T")[0], // Format date to YYYY-MM-DD
+                assignedTo: assignedTo || "Unassigned",
+            });
+    });
 
     } catch (error) { 
         res

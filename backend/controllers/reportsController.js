@@ -63,6 +63,65 @@ const exportTasksReport = async (req, res) => {
 // @access Private/Admin 
 const exportUsersReport = async (req, res) => {
     try{
+        const users = await User.find().select("name email _id");
+        const tasks = await Task.find().populate("assignedTo", "name email").populate("createdBy", "name email _id");
+
+        const userTaskMap = {};
+        users.forEach((user) => {
+            userTaskMap[user._id] = {
+                name: user.name,
+                email: user.email,
+                taskCount: 0,
+                inProgress: 0,
+                completedTasks: 0,
+            };
+        });
+
+            userTasks.forEach(task => {
+                if (task.assignedTo){
+                    tasks.assignedTo.forEach(assignedUser => {
+                        if (userTaskMap[assignedUser._id]) {
+                            userTaskMap[assignedUser._id].taskCount++;
+                            if (task.status === "Pending") {
+                                userTaskMap[assignedUser._id].pendingTasks++;
+                            } else if (task.status === "In Progress") {
+                                userTaskMap[assignedUser._id].inProgressTasks++;
+                            } else if (task.status === "Completed") {
+                                userTaskMap[assignedUser._id].completedTasks++;
+                            }
+                        }
+                    });
+                }
+        });
+
+        const workbook = new excelJS.Workbook();
+        const worksheet = workbook.addWorksheet("User Tasks Report");
+
+        worksheet.columns = [
+            {header: "User Name", key: "name", width: 30 },
+            {header: "Email", key: "email", width: 30 },
+            {header: "Total Assigned Tasks", key: "taskCount", width: 20 },
+            {header: "Pending Tasks", key: "pendingTasks", width: 20 },
+            {header: "In Progress Tasks", key: "inProgressTasks", width: 20 },
+            {header: "Completed Tasks", key: "completedTasks", width: 20 },
+        ];
+
+        Object.values(userTaskMap).forEach((user)=> {
+            worksheet.addRow(user);
+        });
+
+        res.setHeader(
+            "Content-Type",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        );
+        res.setHeader(
+            "Content-Disposition",
+            `attachment; filename=user_tasks_report_${new Date().toISOString().split("T")[0]}.xlsx`
+        );
+
+        return workbook.xlsx.write(res).then(() => {
+            res.status(200).end();
+        });
 
     } catch (error) { 
         res

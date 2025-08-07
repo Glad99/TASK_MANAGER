@@ -13,6 +13,16 @@ const Login = () => {
   //Handle Login Form Submit
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    if (!validateEmail(email)) {
+      setError('Please enter a valid email address');
+      return;
+    }
+
+    if (!password) {
+      setError('Password is required');
+      return;
+    }
   };
 
   return <AuthLayout>

@@ -12,7 +12,7 @@ const SignUp = () => {
 
   return (
     <AuthLayout>
-      <div className="lg:w-"></div>
+      <div className="lg:w-[100%]"></div>
     </AuthLayout>
   )
 }

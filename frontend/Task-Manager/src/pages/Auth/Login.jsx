@@ -24,6 +24,8 @@ const Login = () => {
       setError('Password is required');
       return;
     }
+    setError(null);
+    // Here you would typically make an API call to log the user in
   };
 
   return <AuthLayout>

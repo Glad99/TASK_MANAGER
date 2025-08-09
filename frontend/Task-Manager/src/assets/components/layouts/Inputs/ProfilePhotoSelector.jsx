@@ -43,7 +43,25 @@ const ProfilePhotoSelector = ({image, setImage}) => {
           className=""
           onClick={onChooseFile}
           >
-            <LuUpload</button>  </div>)
+            <LuUpload />
+            </button> 
+            </div>
+        )  : (
+            <div className="">
+                <img
+                src={previewUrl}
+                alt="Profile photo"
+                className=""
+                />
+                <button
+                type="button"
+                className=""
+                onClick={handleRemoveImage}
+                >
+                <LuTrash />
+                </button>
+            </div>
+        )
   </div>
 }
 

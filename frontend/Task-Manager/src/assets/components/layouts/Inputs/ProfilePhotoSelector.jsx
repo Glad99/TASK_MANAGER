@@ -35,7 +35,7 @@ const ProfilePhotoSelector = ({image, setImage}) => {
         className=""
         />
 
-        (!image ? 
+        {!image ? (
         <div className="">
           <LuUser className=""/>
           <button
@@ -61,8 +61,8 @@ const ProfilePhotoSelector = ({image, setImage}) => {
                 <LuTrash />
                 </button>
             </div>
-        )
+        )}
   </div>
-}
+};
 
 export default ProfilePhotoSelector

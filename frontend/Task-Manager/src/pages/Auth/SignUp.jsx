@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import AuthLayout from '../../assets/components/layouts/AuthLayout'
+import ProfilePhotoSelector from '../../assets/components/layouts/Inputs/ProfilePhotoSelector';
 
 const SignUp = () => {
   const [profilePic, setProfilePic] = useState(null);

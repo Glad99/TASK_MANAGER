@@ -26,11 +26,25 @@ const ProfilePhotoSelector = ({image, setImage}) => {
     const onChooseFile = () => {
         inputRef.current.click();
     };
-  return (
-    <div>
-      
-    </div>
-  )
+  return <div className="">
+    <input
+        type="file"
+        accept="image/*"
+        ref={inputRef}
+        onChange={handleImageChange}
+        className=""
+        />
+
+        (!image ? 
+        <div className="">
+          <LuUser className=""/>
+          <button
+          type="button"
+          className=""
+          onClick={onChooseFile}
+          >
+            <LuUpload</button>  </div>)
+  </div>
 }
 
 export default ProfilePhotoSelector

@@ -18,7 +18,14 @@ const ProfilePhotoSelector = ({image, setImage}) => {
         }
     };
 
-    const
+    const handleRemoveImage = () => {
+        setImage(null);
+        setPreviewUrl(null);
+    };
+
+    const onChooseFile = () => {
+        inputRef.current.click();
+    };
   return (
     <div>
       

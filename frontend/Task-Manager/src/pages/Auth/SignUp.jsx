@@ -10,6 +10,7 @@ const SignUp = () => {
   const [adminInviteToken, setAdminInviteToken] = useState("");
   const [error, setError] = useState(null);
 
+
   //Handle SignUp Form Submit
     const handleSignUp = async (e) => {
       e.preventDefault();

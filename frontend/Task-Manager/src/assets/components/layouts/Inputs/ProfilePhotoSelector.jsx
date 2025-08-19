@@ -26,14 +26,15 @@ const ProfilePhotoSelector = ({image, setImage}) => {
     const onChooseFile = () => {
         inputRef.current.click();
     };
-  return <div className="">
+  return <div className="flex justify-center mb-6">
     <input
         type="file"
         accept="image/*"
         ref={inputRef}
         onChange={handleImageChange}
-        className=""
+        className="hidden"
         />
+
 
         {!image ? (
         <div className="">
